@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Vay Tiền</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Flatpickr - Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
+    
+
+    <style>
+        /* UTM Avo Font - Khai báo font */
+        @font-face {
+            font-family: 'UTM Avo';
+            src: url('assets/fonts/UTM%20Avo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'UTM Avo';
+            src: url('assets/fonts/UTM%20Avo.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'UTM Avo';
+            src: url('assets/fonts/UTM%20Avo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'UTM Avo';
+            src: url('assets/fonts/UTM%20Avo.ttf') format('truetype');
+            font-weight: bold;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        /* Áp dụng font UTM Avo cho toàn bộ website */
+        * {
+            font-family: 'UTM Avo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        /* Flatpickr Custom Styles */
+        .flatpickr-calendar {
+            font-family: 'UTM Avo', sans-serif;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .flatpickr-calendar {
+                width: 100% !important;
+                max-width: 100%;
+            }
+        }
+
+        .flatpickr-day.selected {
+            background: #F38020;
+            border-color: #F38020;
+            color: white;
+        }
+
+        .flatpickr-day.selected:hover {
+            background: #e6730d;
+            border-color: #e6730d;
+        }
+
+        .flatpickr-day.today {
+            border-color: #4C82F9;
+        }
+
+        .flatpickr-day.today:hover {
+            background: #4C82F9;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="py-4 sm:py-6 md:py-8 px-3 sm:px-4 md:px-6">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-4 sm:mb-6 md:mb-8">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <i class="fas fa-wallet mr-2 sm:mr-3" style="color: #F38020;"></i>
+                Quản Lý Vay Tiền
+            </h1>
+            <p class="text-sm sm:text-base text-gray-600 px-2">Theo dõi danh sách những người đã mượn tiền của bạn</p>
+        </div>
+
+        <!-- Add Loan Form -->
+        <div class="bg-white rounded-lg shadow-md p-4 sm:p-5 md:p-6 mb-4 sm:mb-5 md:mb-6 border border-gray-200">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">
+                <i class="fas fa-plus-circle mr-2" style="color: #F38020;"></i>
+                Thêm Người Mượn Tiền
+            </h2>
+            <form id="loanForm" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                        <i class="fas fa-user mr-1 sm:mr-2" style="color: #4C82F9;"></i>Tên Người Mượn
+                    </label>
+                    <input type="text" id="borrowerName" required
+                        class="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                        placeholder="Nhập tên người mượn">
+                </div>
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                        <i class="fas fa-money-bill-wave mr-1 sm:mr-2" style="color: #F38020;"></i>Số Tiền (VNĐ)
+                    </label>
+                    <input type="text" id="loanAmount" required
+                        class="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                        placeholder="Nhập số tiền (ví dụ: 1,000,000)">
+                </div>
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                        <i class="fas fa-calendar mr-1 sm:mr-2" style="color: #8B5CF6;"></i>Ngày Cho Mượn
+                    </label>
+                    <input type="text" id="loanDate" required placeholder="Chọn ngày" readonly
+                        class="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 cursor-pointer transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                        <i class="fas fa-comment mr-1 sm:mr-2" style="color: #4C82F9;"></i>Ghi Chú
+                    </label>
+                    <input type="text" id="loanNote"
+                        class="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                        placeholder="Ghi chú (tùy chọn)">
+                </div>
+                <div class="sm:col-span-2">
+                    <button type="submit"
+                        class="w-full text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg"
+                        style="background-color: #F38020;">
+                        <i class="fas fa-save mr-2"></i>
+                        Thêm Vào Danh Sách
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Statistics -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-5 md:mb-6">
+            <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 text-center border border-gray-200 hover:shadow-lg transition-all">
+                <div class="text-xl sm:text-2xl md:text-3xl font-bold mb-1" id="totalLoans" style="color: #4C82F9;">0</div>
+                <div class="text-gray-600 text-xs sm:text-sm font-medium">
+                    <i class="fas fa-list mr-1 sm:mr-2" style="color: #4C82F9;"></i><span class="hidden sm:inline">Tổng Số </span>Người Mượn
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 text-center border border-gray-200 hover:shadow-lg transition-all">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold mb-1" id="totalAmount" style="color: #F38020;">0</div>
+                <div class="text-gray-600 text-xs sm:text-sm font-medium">
+                    <i class="fas fa-coins mr-1 sm:mr-2" style="color: #F38020;"></i><span class="hidden sm:inline">Tổng Số </span>Tiền
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 text-center border border-gray-200 hover:shadow-lg transition-all">
+                <div class="text-xl sm:text-2xl md:text-3xl font-bold mb-1" id="unpaidCount" style="color: #ef4444;">0</div>
+                <div class="text-gray-600 text-xs sm:text-sm font-medium">
+                    <i class="fas fa-exclamation-circle mr-1 sm:mr-2" style="color: #ef4444;"></i><span class="hidden sm:inline">Chưa Trả </span>(người)
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 text-center border border-gray-200 hover:shadow-lg transition-all">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold mb-1" id="unpaidAmount" style="color: #F38020;">0</div>
+                <div class="text-gray-600 text-xs sm:text-sm font-medium">
+                    <i class="fas fa-money-bill-wave mr-1 sm:mr-2" style="color: #F38020;"></i><span class="hidden sm:inline">Tiền </span>Chưa Trả
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 text-center border border-gray-200 hover:shadow-lg transition-all col-span-2 sm:col-span-1">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold mb-1" id="paidAmount" style="color: #8B5CF6;">0</div>
+                <div class="text-gray-600 text-xs sm:text-sm font-medium">
+                    <i class="fas fa-check-circle mr-1 sm:mr-2" style="color: #8B5CF6;"></i><span class="hidden sm:inline">Tiền </span>Đã Trả
+                </div>
+            </div>
+        </div>
+
+        <!-- Loans List -->
+        <div class="bg-white rounded-lg shadow-md p-4 sm:p-5 md:p-6 border border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-3 sm:gap-4">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
+                    <i class="fas fa-clipboard-list mr-2" style="color: #F38020;"></i>
+                    Danh Sách Người Mượn Tiền
+                </h2>
+                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    <button onclick="loanManager.exportToJSON()"
+                        class="px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all shadow-sm hover:shadow-md text-white hover:opacity-90"
+                        style="background-color: #4C82F9;">
+                        <i class="fas fa-download mr-1 sm:mr-2"></i>Xuất JSON
+                    </button>
+                    <button onclick="loanManager.importFromJSON()"
+                        class="px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all shadow-sm hover:shadow-md text-white hover:opacity-90"
+                        style="background-color: #8B5CF6;">
+                        <i class="fas fa-upload mr-1 sm:mr-2"></i>Nhập JSON
+                    </button>
+                </div>
+            </div>
+
+            <div id="loansList" class="space-y-4">
+                <!-- Loans will be displayed here -->
+                <div class="text-center text-gray-500 py-8" id="emptyState">
+                    <i class="fas fa-inbox text-4xl mb-4" style="color: #F38020;"></i>
+                    <p class="font-medium">Chưa có người mượn tiền nào. Hãy thêm người đầu tiên!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
