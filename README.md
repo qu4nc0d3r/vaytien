@@ -255,7 +255,7 @@ SOFTWARE.
 **Mạc Quân**
 
 - GitHub: [@macquan](https://github.com/qu4nc0d3r)
-- Email: [Liên hệ qua GitHub](https://github.com/macquan)
+- Email: [Liên hệ qua GitHub](https://github.com/qu4nc0d3r)
 
 ---
 
